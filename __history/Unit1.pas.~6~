@@ -21,10 +21,15 @@ type
     btnTranslate: TButton;
     memoSentences: TMemo;
     memoTranslatedSentences: TMemo;
+    btnTranslateWords: TButton;
+    txtTypeOwnWords: TEdit;
+    txtTranslatedOwnWords: TEdit;
     btnDetect: TButton;
+    txtDetectOwnWords: TEdit;
     lblDetectedLanguage: TLabel;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
+    procedure btnTranslateWordsClick(Sender: TObject);
     procedure btnDetectClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
       const ALanguages: TStringList;
@@ -35,6 +40,7 @@ type
     { Private declarations }
     FTranslationLanguage: String;
     procedure DoTranslateMemo(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
+    procedure DoTranslateEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
     procedure DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
   public
     { Public declarations }
@@ -59,7 +65,7 @@ end;
 
 procedure TForm1.btnDetectClick(Sender: TObject);
 begin
-  TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
+  TMSFNCCloudTranslation1.Detect(txtDetectOwnWords.Text, DoDetectEdit);
 end;
 
 procedure TForm1.btnTranslateClick(Sender: TObject);
@@ -74,6 +80,11 @@ begin
   finally
     sl.Free;
   end;
+end;
+
+procedure TForm1.btnTranslateWordsClick(Sender: TObject);
+begin
+  TMSFNCCloudTranslation1.Translate(txtTypeOwnWords.Text, FTranslationLanguage, DoTranslateEdit);
 end;
 
 procedure TForm1.lbxLanguagesClick(Sender: TObject);
@@ -94,6 +105,12 @@ procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; co
 begin
   if ARequest.Detections.Count > 0 then
     lblDetectedLanguage.Text := 'Detected Language: ' + ARequest.Detections[0].SourceLanguage;
+end;
+
+procedure TForm1.DoTranslateEdit(const ARequest:TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
+begin
+  if ARequest.Translations.Count > 0 then
+    txtTranslatedOwnWords.Text := ARequest.Translations[0].TranslatedText;
 end;
 
 procedure TForm1.DoTranslateMemo(const ARequest: TTMSFNCCloudTranslationRequest;const ARequestResult: TTMSFNCCloudBaseRequestResult);
