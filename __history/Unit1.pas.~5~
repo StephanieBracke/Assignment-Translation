@@ -53,19 +53,14 @@ implementation
 
 {$R *.fmx}
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TForm1.btnDetectClick(Sender: TObject);
 begin
-  FTranslationLanguage := 'en';
+  TMSFNCCloudTranslation1.Detect(txtDetectOwnWords.Text, DoDetectEdit);
 end;
 
 procedure TForm1.btnGetLanguagesClick(Sender: TObject);
 begin
   TMSFNCCloudTranslation1.GetSupportedLanguages;
-end;
-
-procedure TForm1.btnDetectClick(Sender: TObject);
-begin
-  TMSFNCCloudTranslation1.Detect(txtDetectOwnWords.Text, DoDetectEdit);
 end;
 
 procedure TForm1.btnTranslateClick(Sender: TObject);
@@ -119,6 +114,11 @@ var
 begin
   for I := 0 to ARequest.Translations.Count - 1 do
     memoTranslatedSentences.Lines.Add(ARequest.Translations[I].TranslatedText);
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  FTranslationLanguage := 'en';
 end;
 
 end.

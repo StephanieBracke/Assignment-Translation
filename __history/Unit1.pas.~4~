@@ -35,7 +35,6 @@ type
       const ALanguages: TStringList;
       const ARequestResult: TTMSFNCCloudBaseRequestResult);
     procedure lbxLanguagesClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -53,19 +52,14 @@ implementation
 
 {$R *.fmx}
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TForm1.btnDetectClick(Sender: TObject);
 begin
-  FTranslationLanguage := 'en';
+  TMSFNCCloudTranslation1.Detect(txtDetectOwnWords.Text, DoDetectEdit);
 end;
 
 procedure TForm1.btnGetLanguagesClick(Sender: TObject);
 begin
   TMSFNCCloudTranslation1.GetSupportedLanguages;
-end;
-
-procedure TForm1.btnDetectClick(Sender: TObject);
-begin
-  TMSFNCCloudTranslation1.Detect(txtDetectOwnWords.Text, DoDetectEdit);
 end;
 
 procedure TForm1.btnTranslateClick(Sender: TObject);

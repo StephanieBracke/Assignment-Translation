@@ -1,0 +1,126 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = #174
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object btnRetrieve: TButton
+    Position.X = 8.000000000000000000
+    Position.Y = 88.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Retrieve Supported Languages'
+  end
+  object lbxSupportedLanguages: TListBox
+    Position.X = 8.000000000000000000
+    Position.Y = 127.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 345.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 213.000000000000000000
+    Viewport.Height = 341.000000000000000000
+  end
+  object memoToTranslate: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Lines.Strings = (
+      'Hello World!'
+      'This is a new line'
+      'Translating text is easy.')
+    Position.X = 240.000000000000000000
+    Position.Y = 128.000000000000000000
+    Size.Width = 273.000000000000000000
+    Size.Height = 113.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Viewport.Width = 269.000000000000000000
+    Viewport.Height = 109.000000000000000000
+  end
+  object btnTranslate: TButton
+    Position.X = 240.000000000000000000
+    Position.Y = 88.000000000000000000
+    TabOrder = 5
+    Text = 'Translate'
+  end
+  object lblSelectedLanguage: TLabel
+    AutoSize = True
+    Position.X = 336.000000000000000000
+    Position.Y = 91.000000000000000000
+    Size.Width = 103.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.WordWrap = False
+    Text = 'Selected Language:'
+    TabOrder = 3
+  end
+  object TMSFNCCloudTranslation1: TTMSFNCCloudTranslation
+    Size.Width = 26.000000000000000000
+    Size.Height = 26.000000000000000000
+    Size.PlatformDefault = False
+    Position.X = 608.000000000000000000
+    Position.Y = 8.000000000000000000
+    APIKey = 'a2a348ea66f346a1aa8e976341146a3e'
+    Service = tsMicrosoft
+  end
+  object memoTranslated: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 239.000000000000000000
+    Position.Y = 280.000000000000000000
+    Size.Width = 273.000000000000000000
+    Size.Height = 113.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    Viewport.Width = 269.000000000000000000
+    Viewport.Height = 109.000000000000000000
+  end
+  object lblTranslation: TLabel
+    AutoSize = True
+    Position.X = 334.000000000000000000
+    Position.Y = 251.000000000000000000
+    Size.Width = 60.000000000000000000
+    Size.Height = 16.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.WordWrap = False
+    Text = 'Translation:'
+    TabOrder = 4
+  end
+  object TMSFNCWXSpeechToText1: TTMSFNCWXSpeechToText
+    Position.X = 608.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 26.000000000000000000
+    Size.Height = 26.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 11
+    Commands = <>
+  end
+  object TMSFNCWXSpeechSynthesis1: TTMSFNCWXSpeechSynthesis
+    Position.X = 608.000000000000000000
+    Position.Y = 88.000000000000000000
+    Size.Width = 26.000000000000000000
+    Size.Height = 26.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 12
+    Pitch = 1.000000000000000000
+    Rate = 1.000000000000000000
+    Volume = 1.000000000000000000
+  end
+  object btnStartMic: TButton
+    Position.X = 8.000000000000000000
+    Position.Y = 24.000000000000000000
+    TabOrder = 13
+    Text = 'Start'
+    OnClick = btnStartMicClick
+  end
+end

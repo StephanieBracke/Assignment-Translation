@@ -1,0 +1,52 @@
+unit Unit1;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.TMSFNCCustomComponent, FMX.TMSFNCCloudBase, FMX.TMSFNCCloudTranslation,
+  FMX.StdCtrls, FMX.ScrollBox, FMX.Memo, FMX.Layouts, FMX.ListBox,
+  FMX.Controls.Presentation, FMX.TMSFNCTypes, FMX.TMSFNCUtils,
+  FMX.TMSFNCGraphics, FMX.TMSFNCGraphicsTypes, FMX.TMSFNCWXSpeechSynthesis,
+  FMX.TMSFNCCustomControl, FMX.TMSFNCWebBrowser, FMX.TMSFNCCustomWEBControl,
+  FMX.TMSFNCCustomWEBComponent, FMX.TMSFNCWXSpeechToText, FMX.Edit;
+
+type
+  TForm1 = class(TForm)
+    TMSFNCCloudTranslation1: TTMSFNCCloudTranslation;
+    Button1: TButton;
+    ListBox1: TListBox;
+    Label5: TLabel;
+    Button2: TButton;
+    btnGetLanguages: TMemo;
+    Memo2: TMemo;
+    Button3: TButton;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Button4: TButton;
+    Edit5: TEdit;
+    Label6: TLabel;
+    procedure btnGetLanguagesClick(Sender: TObject);
+  private
+    { Private declarations }
+    FTranslationLanguage: String;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+
+
+procedure TForm1.btnGetLanguagesClick(Sender: TObject);
+begin
+  TMSFNCCloudTranslation1.GetSupportedLanguages;
+end;
+
+end.

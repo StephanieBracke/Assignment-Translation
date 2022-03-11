@@ -7,7 +7,6 @@ object Form1: TForm1
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnCreate = FormCreate
   DesignerMasterStyle = 0
   object TMSFNCCloudTranslation1: TTMSFNCCloudTranslation
     Size.Width = 26.000000000000000000
@@ -15,11 +14,10 @@ object Form1: TForm1
     Size.PlatformDefault = False
     Position.X = 8.000000000000000000
     Position.Y = 8.000000000000000000
-    OnGetSupportedLanguages = TMSFNCCloudTranslation1GetSupportedLanguages
     APIKey = 'a2a348ea66f346a1aa8e976341146a3e'
     Service = tsMicrosoft
   end
-  object btnGetLanguages: TButton
+  object Button1: TButton
     Position.X = 8.000000000000000000
     Position.Y = 48.000000000000000000
     Size.Width = 217.000000000000000000
@@ -27,16 +25,14 @@ object Form1: TForm1
     Size.PlatformDefault = False
     TabOrder = 1
     Text = 'Retrieve Supported Languages'
-    OnClick = btnGetLanguagesClick
   end
-  object lbxLanguages: TListBox
+  object ListBox1: TListBox
     Position.X = 8.000000000000000000
     Position.Y = 80.000000000000000000
     Size.Width = 217.000000000000000000
     Size.Height = 345.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
-    OnClick = lbxLanguagesClick
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
@@ -44,7 +40,7 @@ object Form1: TForm1
     Viewport.Width = 213.000000000000000000
     Viewport.Height = 341.000000000000000000
   end
-  object lblSelectedLanguage: TLabel
+  object Label5: TLabel
     AutoSize = True
     Position.X = 336.000000000000000000
     Position.Y = 51.000000000000000000
@@ -55,14 +51,13 @@ object Form1: TForm1
     Text = 'Selected Language:'
     TabOrder = 4
   end
-  object btnTranslate: TButton
+  object Button2: TButton
     Position.X = 240.000000000000000000
     Position.Y = 48.000000000000000000
     TabOrder = 8
     Text = 'Translate'
-    OnClick = btnTranslateClick
   end
-  object memoSentences: TMemo
+  object btnGetLanguages: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
     Lines.Strings = (
@@ -75,10 +70,11 @@ object Form1: TForm1
     Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 11
+    OnClick = btnGetLanguagesClick
     Viewport.Width = 269.000000000000000000
     Viewport.Height = 109.000000000000000000
   end
-  object memoTranslatedSentences: TMemo
+  object Memo2: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
     Position.X = 528.000000000000000000
@@ -90,14 +86,13 @@ object Form1: TForm1
     Viewport.Width = 269.000000000000000000
     Viewport.Height = 109.000000000000000000
   end
-  object btnTranslateWords: TButton
+  object Button3: TButton
     Position.X = 240.000000000000000000
     Position.Y = 208.000000000000000000
     TabOrder = 6
     Text = 'Translate'
-    OnClick = btnTranslateWordsClick
   end
-  object txtTypeOwnWords: TEdit
+  object Edit3: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 13
     Text = 'Type in your own words'
@@ -107,7 +102,7 @@ object Form1: TForm1
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
-  object txtTranslatedOwnWords: TEdit
+  object Edit4: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 12
     Position.X = 536.000000000000000000
@@ -116,14 +111,13 @@ object Form1: TForm1
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
-  object btnDetect: TButton
+  object Button4: TButton
     Position.X = 240.000000000000000000
     Position.Y = 272.000000000000000000
     TabOrder = 5
     Text = 'Detect'
-    OnClick = btnDetectClick
   end
-  object txtDetectOwnWords: TEdit
+  object Edit5: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 9
     Text = 'Type in your own words'
@@ -133,7 +127,7 @@ object Form1: TForm1
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
-  object lblDetectedLanguage: TLabel
+  object Label6: TLabel
     AutoSize = True
     Position.X = 544.000000000000000000
     Position.Y = 315.000000000000000000
