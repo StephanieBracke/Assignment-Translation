@@ -30,7 +30,6 @@ type
     btnResume: TButton;
     btnCancel: TButton;
     lblSpeech: TLabel;
-    btnClear: TButton;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
@@ -46,13 +45,6 @@ type
     procedure btnPauseClick(Sender: TObject);
     procedure TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
     procedure TMSFNCWXSpeechSynthesis1End(Sender: TObject);
-    procedure btnClearClick(Sender: TObject);
-    procedure Clear(Sender: TObject);
-    procedure Translate(Sender: TObject);
-    procedure Speak(Sender: TObject);
-    procedure Pause(Sender: TObject);
-    procedure Resume(Sender: TObject);
-    procedure Cancel(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -62,7 +54,7 @@ type
     { Public declarations }
   end;
 
-ShowDebug = class(TTMSFNCWXSpeechToText);
+//ShowDebug = class(TTMSFNCWXSpeechToText);
 
 var
   Form1: TForm1;
@@ -73,7 +65,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
+  //ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
   FTranslationLanguage := 'en';
   TMSFNCWXSpeechToText1.OnInitialized := Init;
   TTMSFNCUtils.Log('Initialized');
@@ -94,13 +86,7 @@ end;
 procedure TForm1.btnPauseClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Pause;
-  lblSpeech.Text := 'Paused';
-end;
-
-procedure TForm1.Pause(Sender: TObject);
-begin
-  TMSFNCWXSpeechSynthesis1.Pause;
-  lblSpeech.Text := 'Paused';
+  lblSpeech.Text := 'Paused...';
 end;
 
 procedure TForm1.btnResumeClick(Sender: TObject);
@@ -110,36 +96,15 @@ begin
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     lblSpeech.Text :='Speaking...'
   else
-    lblSpeech.Text := 'There''s nothing to resume';
+    lblSpeech.Text := 'There''s nothing to resume.';
 end;
 
-procedure TForm1.Resume(Sender: TObject);
-begin
-  TMSFNCWXSpeechSynthesis1.Resume;
-
-  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text :='Speaking...'
-  else
-    lblSpeech.Text := 'There''s nothing to resume';
-end;
-
-//I don't get why this works differently from the above???
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
 
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text :='Please cancel and restart first'
-  else
-    lblSpeech.Text := 'Speaking...';
-end;
-
-procedure TForm1.Speak(Sender: TObject);
-begin
-  TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
-
-  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text :='Please cancel and restart first'
+    lblSpeech.Text :='Please take it slow'
   else
     lblSpeech.Text := 'Speaking...';
 end;
@@ -149,42 +114,12 @@ begin
   TMSFNCWXSpeechSynthesis1.Cancel;
 end;
 
-procedure TForm1.Cancel(Sender: TObject);
-begin
-  TMSFNCWXSpeechSynthesis1.Cancel;
-end;
-
-procedure TForm1.btnClearClick(Sender: TObject);
-begin
-  memoSentences.Lines.Clear;
-end;
-
-procedure TForm1.Clear(Sender: TObject);
-begin
-  memoSentences.Lines.Clear;
-end;
-
 procedure TForm1.btnConfigureClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.ConfigureVoices;
 end;
 
 procedure TForm1.btnTranslateClick(Sender: TObject);
-var
-  sl: TStringList;
-begin
-  memoTranslatedSentences.Lines.Clear;
-  sl := TStringList.Create;
-  try
-    sl.Assign(memoSentences.Lines);
-    TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
-    TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
-  finally
-    sl.Free;
-  end;
-end;
-
-procedure TForm1.Translate(Sender: TObject);
 var
   sl: TStringList;
 begin
@@ -221,13 +156,10 @@ begin
     lblSpeech.Text := 'Ended...';
 end;
 
-procedure TForm1.TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
+procedure TForm1.TMSFNCWXSpeechToText1Result(Sender: TObject;
+  Phrases: TStrings);
 begin
-  //memoSentences.Lines.AddStrings(Phrases);
- //If phrase contains "" or quotes, quotes should be deleted
- // the sentence without quotes should be added
-
-
+  //memoSentences.Lines.Add(Phrases);
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);

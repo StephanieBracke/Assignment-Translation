@@ -53,6 +53,7 @@ type
     procedure Pause(Sender: TObject);
     procedure Resume(Sender: TObject);
     procedure Cancel(Sender: TObject);
+    procedure ShowLanguages(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -132,6 +133,11 @@ begin
     lblSpeech.Text :='Please cancel and restart first'
   else
     lblSpeech.Text := 'Speaking...';
+end;
+
+procedure TForm1.ShowLanguages(Sender: TObject);
+begin
+  TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
 procedure TForm1.Speak(Sender: TObject);
@@ -226,8 +232,6 @@ begin
   //memoSentences.Lines.AddStrings(Phrases);
  //If phrase contains "" or quotes, quotes should be deleted
  // the sentence without quotes should be added
-
-
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);

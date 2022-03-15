@@ -51,8 +51,6 @@ type
     procedure Translate(Sender: TObject);
     procedure Speak(Sender: TObject);
     procedure Pause(Sender: TObject);
-    procedure Resume(Sender: TObject);
-    procedure Cancel(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -113,16 +111,6 @@ begin
     lblSpeech.Text := 'There''s nothing to resume';
 end;
 
-procedure TForm1.Resume(Sender: TObject);
-begin
-  TMSFNCWXSpeechSynthesis1.Resume;
-
-  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text :='Speaking...'
-  else
-    lblSpeech.Text := 'There''s nothing to resume';
-end;
-
 //I don't get why this works differently from the above???
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
@@ -145,11 +133,6 @@ begin
 end;
 
 procedure TForm1.btnCancelClick(Sender: TObject);
-begin
-  TMSFNCWXSpeechSynthesis1.Cancel;
-end;
-
-procedure TForm1.Cancel(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Cancel;
 end;

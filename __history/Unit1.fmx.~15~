@@ -154,16 +154,6 @@ object Form1: TForm1
         ID = ''
         Name = 'Pause'
         OnCommand = Pause
-      end
-      item
-        ID = ''
-        Name = 'Resume'
-        OnCommand = Resume
-      end
-      item
-        ID = ''
-        Name = 'Cancel'
-        OnCommand = Cancel
       end>
     OnResult = TMSFNCWXSpeechToText1Result
   end
