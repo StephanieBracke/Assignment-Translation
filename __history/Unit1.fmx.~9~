@@ -142,29 +142,4 @@ object Form1: TForm1
     TabOrder = 13
     Commands = <>
   end
-  object btnPause: TButton
-    Position.X = 792.000000000000000000
-    Position.Y = 272.000000000000000000
-    TabOrder = 14
-    Text = 'Pause'
-    OnClick = btnPauseClick
-  end
-  object btnResume: TButton
-    Position.X = 888.000000000000000000
-    Position.Y = 272.000000000000000000
-    TabOrder = 15
-    Text = 'Resume'
-    OnClick = btnResumeClick
-  end
-  object Label1: TLabel
-    Position.X = 816.000000000000000000
-    Position.Y = 232.000000000000000000
-    TabOrder = 16
-  end
-  object btnCancel: TButton
-    Position.X = 840.000000000000000000
-    Position.Y = 312.000000000000000000
-    TabOrder = 17
-    Text = 'Cancel'
-  end
 end

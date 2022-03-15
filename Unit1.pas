@@ -27,6 +27,9 @@ type
     btnSpeak: TButton;
     btnConfigure: TButton;
     TMSFNCWXSpeechToText1: TTMSFNCWXSpeechToText;
+    btnPause: TButton;
+    btnResume: TButton;
+    btnCancel: TButton;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure btnDetectClick(Sender: TObject);
@@ -38,6 +41,9 @@ type
     procedure btnSpeakClick(Sender: TObject);
     procedure btnConfigureClick(Sender: TObject);
     procedure Init(Sender:TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnResumeClick(Sender: TObject);
+    procedure btnPauseClick(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -76,9 +82,24 @@ begin
   TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
+procedure TForm1.btnPauseClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechSynthesis1.Pause;
+end;
+
+procedure TForm1.btnResumeClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechSynthesis1.Resume;
+end;
+
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
+end;
+
+procedure TForm1.btnCancelClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechSynthesis1.Cancel;
 end;
 
 procedure TForm1.btnConfigureClick(Sender: TObject);
