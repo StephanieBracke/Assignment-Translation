@@ -118,19 +118,16 @@ object Form1: TForm1
     Pitch = 1.000000000000000000
     Rate = 1.000000000000000000
     Volume = 1.000000000000000000
-    OnPause = TMSFNCWXSpeechSynthesis1Pause
-    OnResume = TMSFNCWXSpeechSynthesis1Resume
-    OnEnd = TMSFNCWXSpeechSynthesis1End
   end
   object btnSpeak: TButton
-    Position.X = 936.000000000000000000
+    Position.X = 928.000000000000000000
     Position.Y = 200.000000000000000000
     TabOrder = 11
     Text = 'Speak'
     OnClick = btnSpeakClick
   end
   object btnConfigure: TButton
-    Position.X = 728.000000000000000000
+    Position.X = 736.000000000000000000
     Position.Y = 200.000000000000000000
     TabOrder = 12
     Text = 'Configure'
@@ -144,36 +141,26 @@ object Form1: TForm1
     Size.PlatformDefault = False
     TabOrder = 13
     Commands = <>
-    OnResult = TMSFNCWXSpeechToText1Result
   end
   object btnPause: TButton
-    Position.X = 728.000000000000000000
+    Position.X = 760.000000000000000000
     Position.Y = 248.000000000000000000
     TabOrder = 14
     Text = 'Pause'
     OnClick = btnPauseClick
   end
   object btnResume: TButton
-    Position.X = 832.000000000000000000
+    Position.X = 912.000000000000000000
     Position.Y = 248.000000000000000000
     TabOrder = 15
     Text = 'Resume'
     OnClick = btnResumeClick
   end
   object btnCancel: TButton
-    Position.X = 936.000000000000000000
-    Position.Y = 248.000000000000000000
+    Position.X = 840.000000000000000000
+    Position.Y = 296.000000000000000000
     TabOrder = 16
     Text = 'Cancel'
     OnClick = btnCancelClick
-  end
-  object lblSpeech: TLabel
-    Position.X = 816.000000000000000000
-    Position.Y = 208.000000000000000000
-    Size.Width = 113.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = '...'
-    TabOrder = 17
   end
 end
