@@ -133,13 +133,4 @@ object Form1: TForm1
     Text = 'Configure'
     OnClick = btnConfigureClick
   end
-  object TMSFNCWXSpeechToText1: TTMSFNCWXSpeechToText
-    Position.X = 88.000000000000000000
-    Position.Y = 8.000000000000000000
-    Size.Width = 26.000000000000000000
-    Size.Height = 26.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 13
-    Commands = <>
-  end
 end

@@ -56,7 +56,7 @@ object Form1: TForm1
     TabOrder = 4
   end
   object btnTranslate: TButton
-    Position.X = 432.000000000000000000
+    Position.X = 584.000000000000000000
     Position.Y = 200.000000000000000000
     TabOrder = 7
     Text = 'Translate'
@@ -67,7 +67,7 @@ object Form1: TForm1
     DataDetectorTypes = []
     Lines.Strings = (
       'Hello World!'
-      'I am a translator,'
+      'This is a new line'
       'Translating text is easy.')
     Position.X = 240.000000000000000000
     Position.Y = 80.000000000000000000
@@ -91,8 +91,8 @@ object Form1: TForm1
     Viewport.Height = 109.000000000000000000
   end
   object btnDetect: TButton
-    Position.X = 240.000000000000000000
-    Position.Y = 200.000000000000000000
+    Position.X = 584.000000000000000000
+    Position.Y = 40.000000000000000000
     TabOrder = 5
     Text = 'Detect'
     OnClick = btnDetectClick
@@ -107,39 +107,5 @@ object Form1: TForm1
     TextSettings.WordWrap = False
     Text = 'Detected Language:'
     TabOrder = 3
-  end
-  object TMSFNCWXSpeechSynthesis1: TTMSFNCWXSpeechSynthesis
-    Position.X = 48.000000000000000000
-    Position.Y = 8.000000000000000000
-    Size.Width = 26.000000000000000000
-    Size.Height = 26.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 10
-    Pitch = 1.000000000000000000
-    Rate = 1.000000000000000000
-    Volume = 1.000000000000000000
-  end
-  object btnSpeak: TButton
-    Position.X = 928.000000000000000000
-    Position.Y = 200.000000000000000000
-    TabOrder = 11
-    Text = 'Speak'
-    OnClick = btnSpeakClick
-  end
-  object btnConfigure: TButton
-    Position.X = 736.000000000000000000
-    Position.Y = 200.000000000000000000
-    TabOrder = 12
-    Text = 'Configure'
-    OnClick = btnConfigureClick
-  end
-  object TMSFNCWXSpeechToText1: TTMSFNCWXSpeechToText
-    Position.X = 88.000000000000000000
-    Position.Y = 8.000000000000000000
-    Size.Width = 26.000000000000000000
-    Size.Height = 26.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 13
-    Commands = <>
   end
 end
