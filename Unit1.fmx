@@ -170,9 +170,14 @@ object Form1: TForm1
         ID = ''
         Name = 'Show languages'
         OnCommand = ShowLanguages
+      end
+      item
+        ID = ''
+        Name = 'Dutch'
+        OnCommand = Dutch
       end>
-    OnResult = TMSFNCWXSpeechToText1Result
     OnResultNoMatch = TMSFNCWXSpeechToText1ResultNoMatch
+    OnResultMatch = TMSFNCWXSpeechToText1ResultMatch
   end
   object btnPause: TButton
     Position.X = 728.000000000000000000

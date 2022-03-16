@@ -44,7 +44,6 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnResumeClick(Sender: TObject);
     procedure btnPauseClick(Sender: TObject);
-    procedure TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
     procedure TMSFNCWXSpeechSynthesis1End(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure Clear(Sender: TObject);
@@ -56,6 +55,10 @@ type
     procedure ShowLanguages(Sender: TObject);
     procedure TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
       Phrases: TStrings);
+    procedure Dutch(Sender: TObject);
+    procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
+      userSaid: string; Parameters: TStrings;
+      Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -126,7 +129,6 @@ begin
     lblSpeech.Text := 'There''s nothing to resume';
 end;
 
-//I don't get why this works differently from the above???
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
@@ -229,9 +231,23 @@ begin
     lblSpeech.Text := 'Ended...';
 end;
 
-procedure TForm1.TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
+procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
+  userSaid: string; Parameters: TStrings; Command: TTMSFNCWXSpeechToTextCommand;
+  Phrases: TStrings);
+var
+  I: Integer;
+  //s: string;
+  //Select: TTMSFNCWXSpeechToTextCommand;
 begin
-  //memoSentences.Lines.AddStrings(Phrases);
+//s := userSaid;
+for I := 0 to lbxLanguages.Items.Count - 1 do
+   begin
+    if (lbxLanguages.Items.Names[I] = userSaid ) then
+    begin
+      lblSelectedLanguage.Text := 'Selected Language: ' + lbxLanguages.Items.Names[I];
+      FTranslationLanguage := lbxLanguages.Items.Values[lbxLanguages.Items.Names[I]];
+    end;
+   end;
 end;
 
 procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
@@ -254,4 +270,22 @@ begin
     memoTranslatedSentences.Lines.Add(ARequest.Translations[I].TranslatedText);
 end;
 
+procedure TForm1.Dutch(Sender: TObject);
+var
+  I: Integer;
+begin
+   for I := 0 to lbxLanguages.Items.Count - 1 do
+   begin
+    if (lbxLanguages.Items.Names[I] = 'Dutch') then
+    begin
+      lblSelectedLanguage.Text := 'Selected Language: ' + lbxLanguages.Items.Names[I];
+      FTranslationLanguage := lbxLanguages.Items.Values[lbxLanguages.Items.Names[I]];
+    end;
+   end;
+end;
+
 end.
+
+
+
+
