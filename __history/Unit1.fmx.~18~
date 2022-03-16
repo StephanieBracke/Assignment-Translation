@@ -26,7 +26,7 @@ object Form1: TForm1
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Text = 'Retrieve Supported Languages'
+    Text = 'Show Languages'
     OnClick = btnGetLanguagesClick
   end
   object lbxLanguages: TListBox
@@ -47,7 +47,7 @@ object Form1: TForm1
   object lblSelectedLanguage: TLabel
     AutoSize = True
     Position.X = 528.000000000000000000
-    Position.Y = 91.000000000000000000
+    Position.Y = 83.000000000000000000
     Size.Width = 103.000000000000000000
     Size.Height = 16.000000000000000000
     Size.PlatformDefault = False
@@ -56,9 +56,9 @@ object Form1: TForm1
     TabOrder = 4
   end
   object btnTranslate: TButton
-    Position.X = 584.000000000000000000
+    Position.X = 728.000000000000000000
     Position.Y = 200.000000000000000000
-    TabOrder = 7
+    TabOrder = 6
     Text = 'Translate'
     OnClick = btnTranslateClick
   end
@@ -67,14 +67,14 @@ object Form1: TForm1
     DataDetectorTypes = []
     Lines.Strings = (
       'Hello World!'
-      'This is a new line'
+      'I am a translator,'
       'Translating text is easy.')
     Position.X = 240.000000000000000000
     Position.Y = 80.000000000000000000
     Size.Width = 273.000000000000000000
     Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 9
+    TabOrder = 8
     Viewport.Width = 269.000000000000000000
     Viewport.Height = 109.000000000000000000
   end
@@ -86,26 +86,129 @@ object Form1: TForm1
     Size.Width = 273.000000000000000000
     Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 7
     Viewport.Width = 269.000000000000000000
     Viewport.Height = 109.000000000000000000
-  end
-  object btnDetect: TButton
-    Position.X = 584.000000000000000000
-    Position.Y = 40.000000000000000000
-    TabOrder = 5
-    Text = 'Detect'
-    OnClick = btnDetectClick
   end
   object lblDetectedLanguage: TLabel
     AutoSize = True
     Position.X = 528.000000000000000000
-    Position.Y = 139.000000000000000000
+    Position.Y = 131.000000000000000000
     Size.Width = 106.000000000000000000
     Size.Height = 16.000000000000000000
     Size.PlatformDefault = False
     TextSettings.WordWrap = False
     Text = 'Detected Language:'
     TabOrder = 3
+  end
+  object TMSFNCWXSpeechSynthesis1: TTMSFNCWXSpeechSynthesis
+    Position.X = 48.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 26.000000000000000000
+    Size.Height = 26.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    Pitch = 1.000000000000000000
+    Rate = 1.000000000000000000
+    Volume = 1.000000000000000000
+    OnEnd = TMSFNCWXSpeechSynthesis1End
+  end
+  object btnSpeak: TButton
+    Position.X = 936.000000000000000000
+    Position.Y = 200.000000000000000000
+    TabOrder = 10
+    Text = 'Speak'
+    OnClick = btnSpeakClick
+  end
+  object btnConfigure: TButton
+    Position.X = 832.000000000000000000
+    Position.Y = 200.000000000000000000
+    TabOrder = 11
+    Text = 'Configure'
+    OnClick = btnConfigureClick
+  end
+  object TMSFNCWXSpeechToText1: TTMSFNCWXSpeechToText
+    Position.X = 88.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 26.000000000000000000
+    Size.Height = 26.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 12
+    Language = 'en-US'
+    Commands = <
+      item
+        ID = ''
+        Name = 'Clear'
+        OnCommand = Clear
+      end
+      item
+        ID = ''
+        Name = 'Translate'
+        OnCommand = Translate
+      end
+      item
+        ID = ''
+        Name = 'Speak'
+        OnCommand = Speak
+      end
+      item
+        ID = ''
+        Name = 'Pause'
+        OnCommand = Pause
+      end
+      item
+        ID = ''
+        Name = 'Resume'
+        OnCommand = Resume
+      end
+      item
+        ID = ''
+        Name = 'Cancel'
+        OnCommand = Cancel
+      end
+      item
+        ID = ''
+        Name = 'Show languages'
+        OnCommand = ShowLanguages
+      end>
+    OnResult = TMSFNCWXSpeechToText1Result
+    OnResultNoMatch = TMSFNCWXSpeechToText1ResultNoMatch
+  end
+  object btnPause: TButton
+    Position.X = 728.000000000000000000
+    Position.Y = 248.000000000000000000
+    TabOrder = 13
+    Text = 'Pause'
+    OnClick = btnPauseClick
+  end
+  object btnResume: TButton
+    Position.X = 832.000000000000000000
+    Position.Y = 248.000000000000000000
+    TabOrder = 14
+    Text = 'Resume'
+    OnClick = btnResumeClick
+  end
+  object btnCancel: TButton
+    Position.X = 936.000000000000000000
+    Position.Y = 248.000000000000000000
+    TabOrder = 15
+    Text = 'Cancel'
+    OnClick = btnCancelClick
+  end
+  object lblSpeech: TLabel
+    Position.X = 528.000000000000000000
+    Position.Y = 176.000000000000000000
+    Size.Width = 185.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Status'
+    TabOrder = 16
+  end
+  object btnClear: TButton
+    Position.X = 328.000000000000000000
+    Position.Y = 208.000000000000000000
+    TabOrder = 17
+    Text = 'Clear'
+    OnClick = btnClearClick
   end
 end
