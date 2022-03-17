@@ -26,7 +26,7 @@ object Form1: TForm1
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Text = 'Retrieve Supported Languages'
+    Text = 'Show Languages'
     OnClick = btnGetLanguagesClick
   end
   object lbxLanguages: TListBox
@@ -134,8 +134,54 @@ object Form1: TForm1
     Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 12
-    Commands = <>
-    OnResult = TMSFNCWXSpeechToText1Result
+    Language = 'en-US'
+    Commands = <
+      item
+        ID = ''
+        Name = 'Clear'
+        OnCommand = Clear
+      end
+      item
+        ID = ''
+        Name = 'Translate'
+        OnCommand = Translate
+      end
+      item
+        ID = ''
+        Name = 'Speak'
+        OnCommand = Speak
+      end
+      item
+        ID = ''
+        Name = 'Pause'
+        OnCommand = Pause
+      end
+      item
+        ID = ''
+        Name = 'Resume'
+        OnCommand = Resume
+      end
+      item
+        ID = ''
+        Name = 'Cancel'
+        OnCommand = Cancel
+      end
+      item
+        ID = ''
+        Name = 'Show languages'
+        OnCommand = ShowLanguages
+      end
+      item
+        ID = ''
+        Name = 'Dutch'
+        OnCommand = Dutch
+      end
+      item
+        ID = 'Select'
+        Name = 'Select*Language'
+      end>
+    OnResultNoMatch = TMSFNCWXSpeechToText1ResultNoMatch
+    OnResultMatch = TMSFNCWXSpeechToText1ResultMatch
   end
   object btnPause: TButton
     Position.X = 728.000000000000000000
@@ -166,5 +212,12 @@ object Form1: TForm1
     Size.PlatformDefault = False
     Text = 'Status'
     TabOrder = 16
+  end
+  object btnClear: TButton
+    Position.X = 328.000000000000000000
+    Position.Y = 208.000000000000000000
+    TabOrder = 17
+    Text = 'Clear'
+    OnClick = btnClearClick
   end
 end

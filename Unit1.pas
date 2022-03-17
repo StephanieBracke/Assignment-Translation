@@ -59,6 +59,7 @@ type
     procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
       userSaid: string; Parameters: TStrings;
       Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
+    procedure Select(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -137,6 +138,11 @@ begin
     lblSpeech.Text :='Please cancel and restart first'
   else
     lblSpeech.Text := 'Speaking...';
+end;
+
+procedure TForm1.Select(Sender: TObject);
+begin
+//Splat
 end;
 
 procedure TForm1.ShowLanguages(Sender: TObject);
@@ -228,7 +234,7 @@ begin
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     lblSpeech.Text :='Speaking...'
   else
-    lblSpeech.Text := 'Ended...';
+    lblSpeech.Text := 'Ended';
 end;
 
 procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
@@ -236,17 +242,15 @@ procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
   Phrases: TStrings);
 var
   I: Integer;
-  //s: string;
-  //Select: TTMSFNCWXSpeechToTextCommand;
+  Select: TTMSFNCWXSpeechToTextCommand;
 begin
-//s := userSaid;
-for I := 0 to lbxLanguages.Items.Count - 1 do
+   if Command.ID = 'Select' then
    begin
-    if (lbxLanguages.Items.Names[I] = userSaid ) then
-    begin
-      lblSelectedLanguage.Text := 'Selected Language: ' + lbxLanguages.Items.Names[I];
-      FTranslationLanguage := lbxLanguages.Items.Values[lbxLanguages.Items.Names[I]];
-    end;
+     if Parameters.Count > 0 then
+     begin
+       lblSelectedLanguage.Text := 'Selected Language: ' + Trim(Parameters[0]);
+       FTranslationLanguage := lbxLanguages.Items.Values[Trim(Parameters[0])];
+     end;
    end;
 end;
 
@@ -270,21 +274,8 @@ begin
     memoTranslatedSentences.Lines.Add(ARequest.Translations[I].TranslatedText);
 end;
 
-procedure TForm1.Dutch(Sender: TObject);
-var
-  I: Integer;
-begin
-   for I := 0 to lbxLanguages.Items.Count - 1 do
-   begin
-    if (lbxLanguages.Items.Names[I] = 'Dutch') then
-    begin
-      lblSelectedLanguage.Text := 'Selected Language: ' + lbxLanguages.Items.Names[I];
-      FTranslationLanguage := lbxLanguages.Items.Values[lbxLanguages.Items.Names[I]];
-    end;
-   end;
-end;
-
 end.
+
 
 
 
