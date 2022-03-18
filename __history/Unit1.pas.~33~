@@ -55,11 +55,9 @@ type
     procedure ShowLanguages(Sender: TObject);
     procedure TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
       Phrases: TStrings);
-    procedure Dutch(Sender: TObject);
     procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
       userSaid: string; Parameters: TStrings;
       Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
-    procedure Select(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -95,6 +93,7 @@ end;
 
 procedure TForm1.btnGetLanguagesClick(Sender: TObject);
 begin
+  lblSelectedLanguage.Text := 'Selected Language: English';
   TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
@@ -140,13 +139,9 @@ begin
     lblSpeech.Text := 'Speaking...';
 end;
 
-procedure TForm1.Select(Sender: TObject);
-begin
-//Splat
-end;
-
 procedure TForm1.ShowLanguages(Sender: TObject);
 begin
+  lblSelectedLanguage.Text := 'Selected Language: English';
   TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
@@ -192,9 +187,18 @@ begin
   memoTranslatedSentences.Lines.Clear;
   sl := TStringList.Create;
   try
-    sl.Assign(memoSentences.Lines);
-    TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
-    TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
+    if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+//    else if (lbxLanguages.ItemIndex <= -1) then
+//    begin
+//      lblSelectedLanguage.Text := 'Select a language first';
+//    end
+    else
+      sl.Assign(memoSentences.Lines);
+      TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
+      TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
   finally
     sl.Free;
   end;
@@ -207,6 +211,12 @@ begin
   memoTranslatedSentences.Lines.Clear;
   sl := TStringList.Create;
   try
+    if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+
+    else
     sl.Assign(memoSentences.Lines);
     TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
     TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
@@ -246,13 +256,10 @@ var
 begin
    if Command.ID = 'Select' then
    begin
-     for I := 0 to lbxLanguages.Items.Count - 1 do
+     if Parameters.Count > 0 then
      begin
-       if (lbxLanguages.Items.Names[I] = userSaid) then
-       begin
-         lblSelectedLanguage.Text := 'Selected Language: ' + lbxLanguages.Items.Names[I];
-         FTranslationLanguage := lbxLanguages.Items.Values[lbxLanguages.Items.Names[I]];
-       end;
+       lblSelectedLanguage.Text := 'Selected Language: ' + Trim(Parameters[0]);
+       FTranslationLanguage := lbxLanguages.Items.Values[Trim(Parameters[0])];
      end;
    end;
 end;
@@ -277,21 +284,8 @@ begin
     memoTranslatedSentences.Lines.Add(ARequest.Translations[I].TranslatedText);
 end;
 
-procedure TForm1.Dutch(Sender: TObject);
-var
-  I: Integer;
-begin
-   for I := 0 to lbxLanguages.Items.Count - 1 do
-   begin
-    if (lbxLanguages.Items.Names[I] = 'Dutch') then
-    begin
-      lblSelectedLanguage.Text := 'Selected Language: ' + lbxLanguages.Items.Names[I];
-      FTranslationLanguage := lbxLanguages.Items.Values[lbxLanguages.Items.Names[I]];
-    end;
-   end;
-end;
-
 end.
+
 
 
 

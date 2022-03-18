@@ -44,7 +44,6 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnResumeClick(Sender: TObject);
     procedure btnPauseClick(Sender: TObject);
-    procedure TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
     procedure TMSFNCWXSpeechSynthesis1End(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure Clear(Sender: TObject);
@@ -56,6 +55,9 @@ type
     procedure ShowLanguages(Sender: TObject);
     procedure TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
       Phrases: TStrings);
+    procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
+      userSaid: string; Parameters: TStrings;
+      Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -126,7 +128,6 @@ begin
     lblSpeech.Text := 'There''s nothing to resume';
 end;
 
-//I don't get why this works differently from the above???
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
@@ -226,12 +227,35 @@ begin
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     lblSpeech.Text :='Speaking...'
   else
-    lblSpeech.Text := 'Ended...';
+    lblSpeech.Text := 'Ended';
 end;
 
-procedure TForm1.TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
+procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
+  userSaid: string; Parameters: TStrings; Command: TTMSFNCWXSpeechToTextCommand;
+  Phrases: TStrings);
+var
+  I: Integer;
+  P: String;
 begin
-  //memoSentences.Lines.AddStrings(Phrases);
+  P := Trim(Parameters[0]);
+
+  if Command.ID = 'Select' then
+  begin
+    if Parameters.Count > 0 then
+    begin
+      if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+      else if lbxLanguages.Items.IndexOfName(P) > -1 then
+      begin
+        lblSelectedLanguage.Text := 'Selected Language: ' + P;
+        FTranslationLanguage := lbxLanguages.Items.Values[P];
+      end
+      else
+        lblSelectedLanguage.Text := 'Selected Language doesn''t exist';
+    end;
+  end;
 end;
 
 procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
@@ -255,3 +279,8 @@ begin
 end;
 
 end.
+
+
+
+
+

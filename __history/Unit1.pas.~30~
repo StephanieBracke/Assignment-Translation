@@ -10,7 +10,7 @@ uses
   FMX.Controls.Presentation, FMX.TMSFNCTypes, FMX.TMSFNCUtils,
   FMX.TMSFNCGraphics, FMX.TMSFNCGraphicsTypes, FMX.TMSFNCWXSpeechSynthesis,
   FMX.TMSFNCCustomControl, FMX.TMSFNCWebBrowser, FMX.TMSFNCCustomWEBControl,
-  FMX.TMSFNCCustomWEBComponent, FMX.TMSFNCWXSpeechToText, FMX.Edit;
+  FMX.TMSFNCCustomWEBComponent, FMX.TMSFNCWXSpeechToText, FMX.Edit, StrUtils;
 
 type
   TForm1 = class(TForm)
@@ -44,13 +44,20 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnResumeClick(Sender: TObject);
     procedure btnPauseClick(Sender: TObject);
-    procedure TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
     procedure TMSFNCWXSpeechSynthesis1End(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure Clear(Sender: TObject);
     procedure Translate(Sender: TObject);
     procedure Speak(Sender: TObject);
     procedure Pause(Sender: TObject);
+    procedure Resume(Sender: TObject);
+    procedure Cancel(Sender: TObject);
+    procedure ShowLanguages(Sender: TObject);
+    procedure TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
+      Phrases: TStrings);
+    procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
+      userSaid: string; Parameters: TStrings;
+      Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -111,7 +118,16 @@ begin
     lblSpeech.Text := 'There''s nothing to resume';
 end;
 
-//I don't get why this works differently from the above???
+procedure TForm1.Resume(Sender: TObject);
+begin
+  TMSFNCWXSpeechSynthesis1.Resume;
+
+  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
+    lblSpeech.Text :='Speaking...'
+  else
+    lblSpeech.Text := 'There''s nothing to resume';
+end;
+
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
@@ -120,6 +136,11 @@ begin
     lblSpeech.Text :='Please cancel and restart first'
   else
     lblSpeech.Text := 'Speaking...';
+end;
+
+procedure TForm1.ShowLanguages(Sender: TObject);
+begin
+  TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
 procedure TForm1.Speak(Sender: TObject);
@@ -133,6 +154,11 @@ begin
 end;
 
 procedure TForm1.btnCancelClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechSynthesis1.Cancel;
+end;
+
+procedure TForm1.Cancel(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Cancel;
 end;
@@ -159,9 +185,18 @@ begin
   memoTranslatedSentences.Lines.Clear;
   sl := TStringList.Create;
   try
-    sl.Assign(memoSentences.Lines);
-    TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
-    TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
+    if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+//    else if lbxLanguages.ItemIndex = -1 then
+//      begin
+//        lblSelectedLanguage.Text := 'Select a language first';
+//      end
+    else
+      sl.Assign(memoSentences.Lines);
+      TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
+      TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
   finally
     sl.Free;
   end;
@@ -174,6 +209,15 @@ begin
   memoTranslatedSentences.Lines.Clear;
   sl := TStringList.Create;
   try
+    if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+//    else if lbxLanguages.ItemIndex = -1 then
+//      begin
+//        lblSelectedLanguage.Text := 'Select a language first';
+//      end
+    else
     sl.Assign(memoSentences.Lines);
     TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
     TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
@@ -201,16 +245,44 @@ begin
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     lblSpeech.Text :='Speaking...'
   else
-    lblSpeech.Text := 'Ended...';
+    lblSpeech.Text := 'Ended';
 end;
 
-procedure TForm1.TMSFNCWXSpeechToText1Result(Sender: TObject; Phrases: TStrings);
+procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
+  userSaid: string; Parameters: TStrings; Command: TTMSFNCWXSpeechToTextCommand;
+  Phrases: TStrings);
+var
+  I: Integer;
+  P: String;
 begin
-  //memoSentences.Lines.AddStrings(Phrases);
- //If phrase contains "" or quotes, quotes should be deleted
- // the sentence without quotes should be added
+TTMSFNCUtils.Log('Begin');
+  TTMSFNCUtils.Log('Params');
 
+  if Command.ID = 'Select' then
+  begin
+    if Parameters.Count > 0 then
+    P := Trim(Parameters[0]);
+    begin
+      if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+      else if lbxLanguages.Items.IndexOfName(P) > -1 then
+      begin
+        lblSelectedLanguage.Text := 'Selected Language: ' + P;
+        FTranslationLanguage := lbxLanguages.Items.Values[P];
+      end
+      else
+        lblSelectedLanguage.Text := 'Selected Language doesn''t exist';
+    end;
+  end;
+  TTMSFNCUtils.Log('End');
+end;
 
+procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
+  Phrases: TStrings);
+begin
+  memoSentences.Lines.AddStrings(Phrases);
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
@@ -228,3 +300,8 @@ begin
 end;
 
 end.
+
+
+
+
+
