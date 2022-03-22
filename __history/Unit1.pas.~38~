@@ -31,6 +31,7 @@ type
     btnCancel: TButton;
     lblSpeech: TLabel;
     btnClear: TButton;
+    Timer1: TTimer;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
@@ -55,11 +56,9 @@ type
     procedure ShowLanguages(Sender: TObject);
     procedure TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
       Phrases: TStrings);
-    procedure Dutch(Sender: TObject);
     procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
       userSaid: string; Parameters: TStrings;
       Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
-    procedure Select(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -82,6 +81,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
   FTranslationLanguage := 'en';
+  TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
   TMSFNCWXSpeechToText1.OnInitialized := Init;
   TTMSFNCUtils.Log('Initialized');
 end;
@@ -95,6 +95,7 @@ end;
 
 procedure TForm1.btnGetLanguagesClick(Sender: TObject);
 begin
+  lblSelectedLanguage.Text := 'Selected Language: English';
   TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
@@ -132,7 +133,12 @@ end;
 
 procedure TForm1.btnSpeakClick(Sender: TObject);
 begin
-  TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
+  if FTranslationLanguage = 'nl' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
+    end;
+
+TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
 
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     lblSpeech.Text :='Please cancel and restart first'
@@ -140,18 +146,45 @@ begin
     lblSpeech.Text := 'Speaking...';
 end;
 
-procedure TForm1.Select(Sender: TObject);
-begin
-//Splat
-end;
-
 procedure TForm1.ShowLanguages(Sender: TObject);
 begin
+  lblSelectedLanguage.Text := 'Selected Language: English';
   TMSFNCCloudTranslation1.GetSupportedLanguages;
 end;
 
 procedure TForm1.Speak(Sender: TObject);
+//var
+//  s : string;
 begin
+//Case Ftranslationlanguage of
+//'nl': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
+//'en': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
+//'ru': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Pavel - Russian (Russia)"';
+//'ja': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Ayumi - Japanese (Japan)"';
+//'ro': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Andrei - Romanian (Romania)"';
+//end;
+
+  if FTranslationLanguage = 'nl' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
+    end
+  else if FTranslationLanguage = 'en' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
+    end
+  else if FTranslationLanguage = 'ru' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Pavel - Russian (Russia)"';
+    end
+  else if FTranslationLanguage = 'ja' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Ayumi - Japanese (Japan)"';
+    end
+  else if FTranslationLanguage = 'ro' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Andrei - Romanian (Romania)"';
+    end;
+
   TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
 
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
@@ -192,9 +225,14 @@ begin
   memoTranslatedSentences.Lines.Clear;
   sl := TStringList.Create;
   try
-    sl.Assign(memoSentences.Lines);
-    TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
-    TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
+    if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+    else
+      sl.Assign(memoSentences.Lines);
+      TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
+      TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
   finally
     sl.Free;
   end;
@@ -207,6 +245,12 @@ begin
   memoTranslatedSentences.Lines.Clear;
   sl := TStringList.Create;
   try
+    if lbxLanguages.Count = 0 then
+      begin
+        lblSelectedLanguage.Text := 'Load languages first';
+      end
+
+    else
     sl.Assign(memoSentences.Lines);
     TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
     TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
@@ -242,14 +286,26 @@ procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
   Phrases: TStrings);
 var
   I: Integer;
-  Select: TTMSFNCWXSpeechToTextCommand;
+  P: String;
 begin
    if Command.ID = 'Select' then
    begin
      if Parameters.Count > 0 then
+     P := Trim(Parameters[0]);
      begin
-       lblSelectedLanguage.Text := 'Selected Language: ' + Trim(Parameters[0]);
-       FTranslationLanguage := lbxLanguages.Items.Values[Trim(Parameters[0])];
+     if lbxLanguages.Count = 0 then
+     begin
+       lblSelectedLanguage.Text := 'Show languages first';
+     end
+     else if (lbxLanguages.Items.IndexOfName(P) > -1) then
+       begin
+         lblSelectedLanguage.Text := 'Selected Language: ' + P;
+         FTranslationLanguage := lbxLanguages.Items.Values[P];
+       end
+       else
+       begin
+         lblSelectedLanguage.Text := 'Language is not available';
+       end;
      end;
    end;
 end;
@@ -257,7 +313,10 @@ end;
 procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
   Phrases: TStrings);
 begin
-  memoSentences.Lines.AddStrings(Phrases);
+  if not(TMSFNCWXSpeechSynthesis1.IsSpeaking) then
+    memoSentences.Lines.AddStrings(Phrases);
+    //Timer goes here?
+    //Timer1.Interval;
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
@@ -269,6 +328,7 @@ end;
 procedure TForm1.DoTranslateMemo(const ARequest: TTMSFNCCloudTranslationRequest;const ARequestResult: TTMSFNCCloudBaseRequestResult);
 var
   I: Integer;
+  s : string;
 begin
   for I := 0 to ARequest.Translations.Count - 1 do
     memoTranslatedSentences.Lines.Add(ARequest.Translations[I].TranslatedText);

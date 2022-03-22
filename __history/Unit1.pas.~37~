@@ -84,9 +84,6 @@ begin
   TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
   TMSFNCWXSpeechToText1.OnInitialized := Init;
   TTMSFNCUtils.Log('Initialized');
-
-  Timer1 := TTimer.Create(nil);
-  Timer1.Interval := 100;
 end;
 
 procedure TForm1.Init(Sender: TObject);
@@ -156,17 +153,7 @@ begin
 end;
 
 procedure TForm1.Speak(Sender: TObject);
-//var
-//  s : string;
 begin
-//Case Ftranslationlanguage of
-//'nl': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
-//'en': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
-//'ru': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Pavel - Russian (Russia)"';
-//'ja': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Ayumi - Japanese (Japan)"';
-//'ro': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Andrei - Romanian (Romania)"';
-//end;
-
   if FTranslationLanguage = 'nl' then
     begin
       TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
@@ -174,10 +161,6 @@ begin
   else if FTranslationLanguage = 'en' then
     begin
       TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
-    end
-  else if FTranslationLanguage = 'de' then
-    begin
-      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Stefan - German (Germany)"';
     end
   else if FTranslationLanguage = 'ru' then
     begin
@@ -322,6 +305,8 @@ procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
 begin
   if not(TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     memoSentences.Lines.AddStrings(Phrases);
+    //Timer goes here?
+    //Timer1.Interval(5);
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest; const ARequestResult: TTMSFNCCloudBaseRequestResult);
