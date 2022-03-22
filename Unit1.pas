@@ -31,7 +31,6 @@ type
     btnCancel: TButton;
     lblSpeech: TLabel;
     btnClear: TButton;
-    Timer1: TTimer;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
@@ -59,6 +58,13 @@ type
     procedure TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
       userSaid: string; Parameters: TStrings;
       Command: TTMSFNCWXSpeechToTextCommand; Phrases: TStrings);
+    procedure PauseSpeechToText;
+    procedure ResumeSpeechToText;
+    procedure GetLanguagesSpeechToText;
+    procedure SpeakSpeechToText;
+    procedure CancelSpeechToText;
+    procedure ClearSpeechToText;
+    procedure TranslateSpeechToText;
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -68,7 +74,7 @@ type
     { Public declarations }
   end;
 
-ShowDebug = class(TTMSFNCWXSpeechToText);
+ShowDebug = class(TTMSFNCWXSpeechSynthesis);
 
 var
   Form1: TForm1;
@@ -79,14 +85,11 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
+  ShowDebug(TMSFNCWXSpeechSynthesis1).ShowDebugConsole;
   FTranslationLanguage := 'en';
   TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
   TMSFNCWXSpeechToText1.OnInitialized := Init;
   TTMSFNCUtils.Log('Initialized');
-
-  Timer1 := TTimer.Create(nil);
-  Timer1.Interval := 100;
 end;
 
 procedure TForm1.Init(Sender: TObject);
@@ -95,11 +98,26 @@ begin
  TTMSFNCUtils.Log('started SpeechToText');
 end;
 
-
-procedure TForm1.btnGetLanguagesClick(Sender: TObject);
+procedure TFOrm1.GetLanguagesSpeechToText;
 begin
   lblSelectedLanguage.Text := 'Selected Language: English';
   TMSFNCCloudTranslation1.GetSupportedLanguages;
+end;
+
+procedure TForm1.btnGetLanguagesClick(Sender: TObject);
+begin
+  GetLanguagesSpeechToText;
+end;
+
+procedure TForm1.ShowLanguages(Sender: TObject);
+begin
+  GetLanguagesSpeechToText;
+end;
+
+procedure TFOrm1.PauseSpeechToText;
+begin
+  TMSFNCWXSpeechSynthesis1.Pause;
+  lblSpeech.Text := 'Paused';
 end;
 
 procedure TForm1.btnPauseClick(Sender: TObject);
@@ -110,8 +128,17 @@ end;
 
 procedure TForm1.Pause(Sender: TObject);
 begin
-  TMSFNCWXSpeechSynthesis1.Pause;
-  lblSpeech.Text := 'Paused';
+  PauseSpeechToText;
+end;
+
+procedure TFOrm1.ResumeSpeechToText;
+begin
+  TMSFNCWXSpeechSynthesis1.Resume;
+
+  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
+    lblSpeech.Text :='Speaking...'
+  else
+    lblSpeech.Text := 'There''s nothing to resume';
 end;
 
 procedure TForm1.btnResumeClick(Sender: TObject);
@@ -126,46 +153,12 @@ end;
 
 procedure TForm1.Resume(Sender: TObject);
 begin
-  TMSFNCWXSpeechSynthesis1.Resume;
-
-  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text :='Speaking...'
-  else
-    lblSpeech.Text := 'There''s nothing to resume';
+  ResumeSpeechToText;
 end;
 
-procedure TForm1.btnSpeakClick(Sender: TObject);
+procedure TFOrm1.SpeakSpeechToText;
 begin
-  if FTranslationLanguage = 'nl' then
-    begin
-      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
-    end;
-
-TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
-
-  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text :='Please cancel and restart first'
-  else
-    lblSpeech.Text := 'Speaking...';
-end;
-
-procedure TForm1.ShowLanguages(Sender: TObject);
-begin
-  lblSelectedLanguage.Text := 'Selected Language: English';
-  TMSFNCCloudTranslation1.GetSupportedLanguages;
-end;
-
-procedure TForm1.Speak(Sender: TObject);
-//var
-//  s : string;
-begin
-//Case Ftranslationlanguage of
-//'nl': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
-//'en': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
-//'ru': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Pavel - Russian (Russia)"';
-//'ja': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Ayumi - Japanese (Japan)"';
-//'ro': TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Andrei - Romanian (Romania)"';
-//end;
+  TMSFNCWXSpeechToText1.Abort;
 
   if FTranslationLanguage = 'nl' then
     begin
@@ -200,24 +193,76 @@ begin
     lblSpeech.Text := 'Speaking...';
 end;
 
-procedure TForm1.btnCancelClick(Sender: TObject);
+procedure TForm1.btnSpeakClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechToText1.Abort;
+
+  if FTranslationLanguage = 'nl' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Bart - Dutch (Belgium)"';
+    end
+  else if FTranslationLanguage = 'en' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
+    end
+  else if FTranslationLanguage = 'de' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Stefan - German (Germany)"';
+    end
+  else if FTranslationLanguage = 'ru' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Pavel - Russian (Russia)"';
+    end
+  else if FTranslationLanguage = 'ja' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Ayumi - Japanese (Japan)"';
+    end
+  else if FTranslationLanguage = 'ro' then
+    begin
+      TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Andrei - Romanian (Romania)"';
+    end;
+
+  TMSFNCWXSpeechSynthesis1.Speak(memoTranslatedSentences.Lines.Text);
+
+  if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
+    lblSpeech.Text :='Please cancel and restart first'
+  else
+    lblSpeech.Text := 'Speaking...';
+end;
+
+procedure TForm1.Speak(Sender: TObject);
+begin
+  SpeakSpeechToText;
+end;
+
+procedure TForm1.CancelSpeechToText;
 begin
   TMSFNCWXSpeechSynthesis1.Cancel;
+end;
+
+procedure TForm1.btnCancelClick(Sender: TObject);
+begin
+  CancelSpeechToText;
 end;
 
 procedure TForm1.Cancel(Sender: TObject);
 begin
-  TMSFNCWXSpeechSynthesis1.Cancel;
+  CancelSpeechToText;
+end;
+
+procedure TForm1.ClearSpeechToText;
+begin
+  memoSentences.Lines.Clear;
 end;
 
 procedure TForm1.btnClearClick(Sender: TObject);
 begin
-  memoSentences.Lines.Clear;
+  ClearSpeechToText;
 end;
 
 procedure TForm1.Clear(Sender: TObject);
 begin
-  memoSentences.Lines.Clear;
+  ClearSpeechToText;
 end;
 
 procedure TForm1.btnConfigureClick(Sender: TObject);
@@ -225,7 +270,7 @@ begin
   TMSFNCWXSpeechSynthesis1.ConfigureVoices;
 end;
 
-procedure TForm1.btnTranslateClick(Sender: TObject);
+procedure TForm1.TranslateSpeechToText;
 var
   sl: TStringList;
 begin
@@ -236,27 +281,6 @@ begin
       begin
         lblSelectedLanguage.Text := 'Load languages first';
       end
-    else
-      sl.Assign(memoSentences.Lines);
-      TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
-      TMSFNCCloudTranslation1.Detect(memoSentences.Text, DoDetectEdit);
-  finally
-    sl.Free;
-  end;
-end;
-
-procedure TForm1.Translate(Sender: TObject);
-var
-  sl: TStringList;
-begin
-  memoTranslatedSentences.Lines.Clear;
-  sl := TStringList.Create;
-  try
-    if lbxLanguages.Count = 0 then
-      begin
-        lblSelectedLanguage.Text := 'Load languages first';
-      end
-
     else
     sl.Assign(memoSentences.Lines);
     TMSFNCCloudTranslation1.Translate(sl, FTranslationLanguage, DoTranslateMemo);
@@ -264,6 +288,16 @@ begin
   finally
     sl.Free;
   end;
+end;
+
+procedure TForm1.btnTranslateClick(Sender: TObject);
+begin
+  TranslateSpeechToText;
+end;
+
+procedure TForm1.Translate(Sender: TObject);
+begin
+  TranslateSpeechToText;
 end;
 
 procedure TForm1.lbxLanguagesClick(Sender: TObject);
@@ -286,6 +320,7 @@ begin
     lblSpeech.Text :='Speaking...'
   else
     lblSpeech.Text := 'Ended';
+    TMSFNCWXSpeechToText1.Start;
 end;
 
 procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
@@ -320,7 +355,6 @@ end;
 procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
   Phrases: TStrings);
 begin
-  if not(TMSFNCWXSpeechSynthesis1.IsSpeaking) then
     memoSentences.Lines.AddStrings(Phrases);
 end;
 
