@@ -35,10 +35,10 @@ type
     lblDetectedLanguage: TLabel;
     ProgressBar1: TProgressBar;
     ProgressBar2: TProgressBar;
-    ImageList1: TImageList;
     StyleBook1: TStyleBook;
-    SpeedButton1: TSpeedButton;
-    Glyph1: TGlyph;
+    ImageList1: TImageList;
+    btnMic: TButton;
+    btnSpeech: TButton;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
@@ -67,7 +67,8 @@ type
     procedure SpeakSpeechToText;
     procedure ClearSpeechToText;
     procedure TranslateSpeechToText;
-    procedure Button1Click(Sender: TObject);
+    procedure TMSFNCWXSpeechToText1Start(Sender: TObject);
+    procedure TMSFNCWXSpeechToText1End(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -123,6 +124,7 @@ procedure TForm1.btnPauseClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Pause;
   lblSpeech.Text := 'Paused';
+  btnSpeech.ImageIndex := 7;
 end;
 
 procedure TForm1.btnResumeClick(Sender: TObject);
@@ -130,7 +132,10 @@ begin
   TMSFNCWXSpeechSynthesis1.Resume;
 
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text := 'Speaking...'
+  begin
+    lblSpeech.Text := 'Speaking...';
+    btnSpeech.ImageIndex := 4;
+  end
   else
     lblSpeech.Text := 'There''s nothing to resume';
 end;
@@ -182,6 +187,7 @@ begin
     lblSpeech.Text := 'Please cancel and restart first'
   else
     lblSpeech.Text := 'Speaking...';
+    btnSpeech.ImageIndex := 4;
 end;
 
 procedure TForm1.btnSpeakClick(Sender: TObject);
@@ -245,11 +251,6 @@ begin
   TranslateSpeechToText;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-  ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
-end;
-
 procedure TForm1.Translate(Sender: TObject);
 begin
   TranslateSpeechToText;
@@ -277,10 +278,20 @@ end;
 procedure TForm1.TMSFNCWXSpeechSynthesis1End(Sender: TObject);
 begin
   if (TMSFNCWXSpeechSynthesis1.IsSpeaking) then
-    lblSpeech.Text := 'Speaking...'
+  begin
+    lblSpeech.Text := 'Speaking...';
+    btnSpeech.ImageIndex := 4;
+  end
   else
     lblSpeech.Text := 'Ended';
-  TMSFNCWXSpeechToText1.Resume;
+    btnSpeech.ImageIndex := 7;
+
+    TMSFNCWXSpeechToText1.Resume;
+end;
+
+procedure TForm1.TMSFNCWXSpeechToText1End(Sender: TObject);
+begin
+  btnMic.ImageIndex := 5;
 end;
 
 procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
@@ -320,6 +331,11 @@ begin
   memoSentences.Lines.AddStrings(Phrases);
   memoSentences.GoToTextEnd;
   memoSentences.WordWrap := True;
+end;
+
+procedure TForm1.TMSFNCWXSpeechToText1Start(Sender: TObject);
+begin
+  btnMic.ImageIndex := 6;
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest;
