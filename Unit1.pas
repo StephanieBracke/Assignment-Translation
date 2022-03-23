@@ -11,18 +11,17 @@ uses
   FMX.Controls.Presentation, FMX.TMSFNCTypes, FMX.TMSFNCUtils,
   FMX.TMSFNCGraphics, FMX.TMSFNCGraphicsTypes, FMX.TMSFNCWXSpeechSynthesis,
   FMX.TMSFNCCustomControl, FMX.TMSFNCWebBrowser, FMX.TMSFNCCustomWEBControl,
-  FMX.TMSFNCCustomWEBComponent, FMX.TMSFNCWXSpeechToText, FMX.Edit, StrUtils;
+  FMX.TMSFNCCustomWEBComponent, FMX.TMSFNCWXSpeechToText, FMX.Edit, StrUtils,
+  System.ImageList, FMX.ImgList;
 
 type
   TForm1 = class(TForm)
     TMSFNCCloudTranslation1: TTMSFNCCloudTranslation;
     btnGetLanguages: TButton;
     lbxLanguages: TListBox;
-    lblSelectedLanguage: TLabel;
     btnTranslate: TButton;
     memoSentences: TMemo;
     memoTranslatedSentences: TMemo;
-    lblDetectedLanguage: TLabel;
     TMSFNCWXSpeechSynthesis1: TTMSFNCWXSpeechSynthesis;
     btnSpeak: TButton;
     btnConfigure: TButton;
@@ -32,8 +31,14 @@ type
     btnCancel: TButton;
     lblSpeech: TLabel;
     btnClear: TButton;
-    Label1: TLabel;
-    Button1: TButton;
+    lblSelectedLanguage: TLabel;
+    lblDetectedLanguage: TLabel;
+    ProgressBar1: TProgressBar;
+    ProgressBar2: TProgressBar;
+    ImageList1: TImageList;
+    StyleBook1: TStyleBook;
+    SpeedButton1: TSpeedButton;
+    Glyph1: TGlyph;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
@@ -85,7 +90,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  //ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
+  ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
   FTranslationLanguage := 'en';
   TMSFNCWXSpeechToText1.Language := 'en-US';
   TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
@@ -284,6 +289,7 @@ procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
 var
   I: Integer;
   P: String;
+  Index: Integer;
 begin
   if Command.ID = 'Select' then
   begin
@@ -298,6 +304,8 @@ begin
     begin
       lblSelectedLanguage.Text := 'Selected Language: ' + P;
       FTranslationLanguage := lbxLanguages.Items.Values[P];
+      Index := lbxLanguages.Items.IndexOfName(P);
+      lbxLanguages.ItemIndex := Index;
     end
     else
     begin
@@ -310,6 +318,8 @@ procedure TForm1.TMSFNCWXSpeechToText1ResultNoMatch(Sender: TObject;
   Phrases: TStrings);
 begin
   memoSentences.Lines.AddStrings(Phrases);
+  memoSentences.GoToTextEnd;
+  memoSentences.WordWrap := True;
 end;
 
 procedure TForm1.DoDetectEdit(const ARequest: TTMSFNCCloudTranslationRequest;
@@ -328,6 +338,9 @@ var
 begin
   for I := 0 to ARequest.Translations.Count - 1 do
     memoTranslatedSentences.Lines.Add(ARequest.Translations[I].TranslatedText);
+    memoTranslatedSentences.GoToTextEnd;
+    memoTranslatedSentences.WordWrap := True;
+
 end;
 
 end.
