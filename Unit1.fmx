@@ -56,8 +56,8 @@ object Form1: TForm1
     TabOrder = 4
   end
   object btnTranslate: TButton
-    Position.X = 728.000000000000000000
-    Position.Y = 392.000000000000000000
+    Position.X = 736.000000000000000000
+    Position.Y = 48.000000000000000000
     TabOrder = 6
     Text = 'Translate'
     OnClick = btnTranslateClick
@@ -111,12 +111,12 @@ object Form1: TForm1
     Pitch = 1.000000000000000000
     Rate = 1.000000000000000000
     Volume = 1.000000000000000000
-    Voice = '"Microsoft Stefan - German (Germany)"'
+    Voice = '"Microsoft Stefanos - Greek (Greece)"'
     OnEnd = TMSFNCWXSpeechSynthesis1End
   end
   object btnSpeak: TButton
-    Position.X = 936.000000000000000000
-    Position.Y = 392.000000000000000000
+    Position.X = 928.000000000000000000
+    Position.Y = 48.000000000000000000
     TabOrder = 10
     Text = 'Speak'
     OnClick = btnSpeakClick
@@ -135,7 +135,7 @@ object Form1: TForm1
     Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 12
-    Language = 'en-US'
+    Language = 'de-DE'
     Commands = <
       item
         ID = ''
@@ -154,27 +154,17 @@ object Form1: TForm1
       end
       item
         ID = ''
-        Name = 'Pause'
-        OnCommand = Pause
-      end
-      item
-        ID = ''
-        Name = 'Resume'
-        OnCommand = Resume
-      end
-      item
-        ID = ''
-        Name = 'Cancel'
-        OnCommand = Cancel
-      end
-      item
-        ID = ''
         Name = 'Show languages'
         OnCommand = ShowLanguages
       end
       item
         ID = 'Select'
         Name = 'Select*Language'
+      end
+      item
+        ID = ''
+        Name = #220'bersetzen'
+        OnCommand = Translate
       end>
     OnResultNoMatch = TMSFNCWXSpeechToText1ResultNoMatch
     OnResultMatch = TMSFNCWXSpeechToText1ResultMatch
@@ -211,9 +201,31 @@ object Form1: TForm1
   end
   object btnClear: TButton
     Position.X = 336.000000000000000000
-    Position.Y = 392.000000000000000000
+    Position.Y = 48.000000000000000000
     TabOrder = 17
     Text = 'Clear'
     OnClick = btnClearClick
+  end
+  object Label1: TLabel
+    Position.X = 424.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 585.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 
+      'Available translation languages: English, Dutch, French, German,' +
+      ' Greek, Russian, Romanian, Swedish, Japanese'
+    TabOrder = 19
+  end
+  object Timer1: TTimer
+    Left = 128
+    Top = 8
+  end
+  object Button1: TButton
+    Position.X = 304.000000000000000000
+    Position.Y = 408.000000000000000000
+    TabOrder = 21
+    Text = 'Button1'
+    OnClick = Button1Click
   end
 end
