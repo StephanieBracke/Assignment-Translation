@@ -39,13 +39,13 @@ type
     ImageList1: TImageList;
     btnMic: TButton;
     btnSpeech: TButton;
+    BtnDutch: TButton;
     procedure btnTranslateClick(Sender: TObject);
     procedure btnGetLanguagesClick(Sender: TObject);
     procedure TMSFNCCloudTranslation1GetSupportedLanguages(Sender: TObject;
       const ALanguages: TStringList;
       const ARequestResult: TTMSFNCCloudBaseRequestResult);
     procedure lbxLanguagesClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure btnSpeakClick(Sender: TObject);
     procedure btnConfigureClick(Sender: TObject);
     procedure Init(Sender: TObject);
@@ -68,7 +68,12 @@ type
     procedure ClearSpeechToText;
     procedure TranslateSpeechToText;
     procedure TMSFNCWXSpeechToText1Start(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure TMSFNCWXSpeechToText1End(Sender: TObject);
+    procedure TMSFNCWXSpeechToText1Error(Sender: TObject);
+    procedure btnMicClick(Sender: TObject);
+    procedure BtnDutchClick(Sender: TObject);
   private
     { Private declarations }
     FTranslationLanguage: String;
@@ -90,6 +95,15 @@ implementation
 {$R *.fmx}
 
 procedure TForm1.FormCreate(Sender: TObject);
+begin
+//  FTranslationLanguage := 'en';
+//  TMSFNCWXSpeechToText1.Language := 'en-US';
+//  TMSFNCWXSpeechSynthesis1.Voice := '"Microsoft Sean - English (Ireland)"';
+//  TMSFNCWXSpeechToText1.OnInitialized := Init;
+//  TTMSFNCUtils.Log('Initialized');
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
 begin
   ShowDebug(TMSFNCWXSpeechToText1).ShowDebugConsole;
   FTranslationLanguage := 'en';
@@ -113,6 +127,12 @@ end;
 procedure TForm1.btnGetLanguagesClick(Sender: TObject);
 begin
   GetLanguagesSpeechToText;
+end;
+
+procedure TForm1.btnMicClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechSynthesis1.Cancel;
+  TMSFNCWXSpeechToText1.Resume;
 end;
 
 procedure TForm1.ShowLanguages(Sender: TObject);
@@ -143,6 +163,7 @@ end;
 procedure TForm1.SpeakSpeechToText;
 begin
   TMSFNCWXSpeechToText1.Abort;
+  btnMic.ImageIndex := 5;
 
   if FTranslationLanguage = 'nl' then
   begin
@@ -225,6 +246,11 @@ begin
   TMSFNCWXSpeechSynthesis1.ConfigureVoices;
 end;
 
+procedure TForm1.BtnDutchClick(Sender: TObject);
+begin
+  TMSFNCWXSpeechToText1.Language := 'nl-NL'
+end;
+
 procedure TForm1.TranslateSpeechToText;
 var
   sl: TStringList;
@@ -292,6 +318,12 @@ end;
 procedure TForm1.TMSFNCWXSpeechToText1End(Sender: TObject);
 begin
   btnMic.ImageIndex := 5;
+  btnMic.Enabled := true;
+end;
+
+procedure TForm1.TMSFNCWXSpeechToText1Error(Sender: TObject);
+begin
+  btnMic.ImageIndex := 9;
 end;
 
 procedure TForm1.TMSFNCWXSpeechToText1ResultMatch(Sender: TObject;
