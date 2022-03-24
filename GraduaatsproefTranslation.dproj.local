@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5"/>
+	</ActiveMobileDevice>
+	<Transactions>
+    <Transaction>2022/03/24 11:25:46.000.232,C:\TMS\WPL\Graduaatsproef\Graduaatsproef\Project2.dproj=C:\TMS\WPL\Graduaatsproef\Graduaatsproef\GraduaatsproefTranslation.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

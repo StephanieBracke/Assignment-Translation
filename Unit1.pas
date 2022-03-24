@@ -129,15 +129,15 @@ begin
   GetLanguagesSpeechToText;
 end;
 
+procedure TForm1.ShowLanguages(Sender: TObject);
+begin
+  GetLanguagesSpeechToText;
+end;
+
 procedure TForm1.btnMicClick(Sender: TObject);
 begin
   TMSFNCWXSpeechSynthesis1.Cancel;
   TMSFNCWXSpeechToText1.Resume;
-end;
-
-procedure TForm1.ShowLanguages(Sender: TObject);
-begin
-  GetLanguagesSpeechToText;
 end;
 
 procedure TForm1.btnPauseClick(Sender: TObject);
